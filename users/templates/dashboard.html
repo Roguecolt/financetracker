@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Income</h5>
+                    <h2>${{ total_income }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total Expense</h5>
+                    <h2>${{ total_expense }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Balance</h5>
+                    <h2>${{ balance }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container d-flex align-items-center justify-content-center">
+        <a href="{% url 'transaction' %}" class="btn btn-secondary ">View Transactions</a>
+    </div>
+    
+    <div class="row mt-1 d-flex align-items-center justify-content-center ">
+        <!-- Pie Chart: Income vs Expense -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Income vs Expense</h5>
+                    <div style="width: 300; height: 300;">
+                        <canvas id="incomeExpenseChart" ></canvas>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    
+    
+</div>
+<script>
+    // Data from Django context
+    var chartData = JSON.parse('{{ chart_data|escapejs }}');
+    // var months = JSON.parse('{{ months|escapejs }}');
+    // var incomeValues = JSON.parse('{{ income_values|escapejs }}');
+    // var expenseValues = JSON.parse('{{ expense_values|escapejs }}');
+
+    // Income vs Expense Pie Chart
+    var ctx1 = document.getElementById('incomeExpenseChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'pie',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                data: chartData.values,
+                backgroundColor: ['#28a745', '#dc3545']
+            }]
+
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,  // Allows manual sizing
+    
+    }
+    });
+
+    
+    
+</script>
+
+
+{% endblock %}

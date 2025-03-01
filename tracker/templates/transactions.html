@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% block title %}Transactions{% endblock %} 
+{% block content %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Date</th>
+      <th scope="col">Category</th>
+      <th scope="col">Type</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for transaction in transactions %}
+    <tr>
+      
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{transaction.date}}</td>
+      <td>{{transaction.amount}}</td>
+      <td>{{transaction.type}}</td>
+      <td>{{transaction.category}}</td>
+      <td><a href="{% url 'delete_transaction' transaction.id%}">Delete</a></td>
+    </tr>
+    {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No transactions found</td>
+                </tr>
+    {%endfor%}
+  </tbody>
+</table>
+
+<!-- <h1>Total Income : {{income_sum}}</h1>
+<h1>Total Expense : {{expense_sum}}</h1>
+<h1>Balance : {{balance}}</h1> -->
+
+
+{% endblock %}
