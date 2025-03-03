@@ -9,17 +9,44 @@ from tracker.models import Transaction  # Import transaction model
 from django.contrib import messages
 from django.contrib.auth.models import User
 import json
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 def signup_view(request):
     if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('dashboard')  # Redirect to user dashboard
-    else:
-        form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        password2 = request.POST['password2']
+
+        try:
+            validate_email(email)
+        except ValidationError:
+            messages.error(request,"Email format invalid")
+            return render(request, 'signup.html')
+
+
+        if password!=password2:
+            messages.error(request, "Passwords dont match")
+            return render(request, "signup.html")
+        
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists")
+            return render(request, "signup.html")
+        
+        if User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists")
+            return render(request, "signup.html")
+        
+        user = User.objects.create_user(username=username,email=email,password=password)
+        user.is_active = False
+        user.save()
+        
+        messages.success(request, "Account created successfully! Please check your email to verify your account.")
+        return redirect("login")
+    
+    return render(request, 'signup.html')
+        
 
 def login_view(request):
     if request.method == "POST":
