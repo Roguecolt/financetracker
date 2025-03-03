@@ -1,57 +1,8 @@
 {% extends 'base.html' %} {% block content %}
-{% if messages %}
-<div class="alert alert-dismissible fade show">
-    {% for message in messages %}
-    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %}" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-md-4 col-sm-6">
-      <!-- Adjust width as needed -->
-      <div class="card shadow-lg p-4">
-        <h2 class="text-center mb-4">Signup</h2>
-
-        <form method="post" action="{% url 'signup' %}">
-          {% csrf_token %}
-          <div class="mb-3">
-            <label for="usename" class="form-label">Username :</label>
-            <input type="text" name="username" id="username" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email :</label>
-            <input type="text" name="email" id="email" class="form-control" required>
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password :</label>
-            <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="password2" class="form-label">Confirm Password :</label>
-            <input type="password" class="form-control" id="password2" name="password2" required>
-        </div>
-          <div class="container d-flex align-items-center justify-content-center">
-            <button type="submit" class="btn btn-primary">Signup</button>
-          </div>
-          
-
-
-        </form>
-
-        
-        <p class="text-center mt-3">
-          Already have an account?
-          <a href="{% url 'login' %}" class="text-primary">Login</a>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
+<h2>Signup</h2>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Signup</button>
+</form>
+<p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
 {% endblock %}
