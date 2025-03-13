@@ -31,7 +31,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # DEBUG = os.getenv("DEBUG") == "True"
 DEBUG = True
 
-ALLOWED_HOSTS = ["moneymap-o4lt.onrender.com", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["moneymap-o4lt.onrender.com", "localhost", '127.0.0.1']
 
 
 # Application definition
@@ -45,6 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tracker',
     'users',
+    'django.contrib.sites',  # Required for allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'financetracker.urls'
@@ -129,3 +136,29 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'  
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Default authentication
+    'allauth.account.auth_backends.AuthenticationBackend',  # Allauth backend
+]
+
+import os
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": os.getenv("SOCIAL_AUTH_GOOGLE_CLIENT_ID"),
+            "secret": os.getenv("SOCIAL_AUTH_GOOGLE_SECRET"),
+            "key" : "",
+        },
+        "SCOPE": ["email", "profile"],
+        "AUTH_PARAMS": {"access_type": "online"},
+    }
+}
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https" if os.getenv("DEPLOYED") == "true" else "http"
+
+SITE_ID = 1  # Ensure this matches your Django site in admin
+ACCOUNT_LOGOUT_ON_GET = True
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"

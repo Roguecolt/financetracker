@@ -22,4 +22,5 @@ urlpatterns = [
     path('users/', include('users.urls')),  # User authentication (signup, login, dashboard)
     path('tracker/', include('tracker.urls')),  # Finance tracker app
     path('', include('tracker.urls')),  # Default homepage → handled in `users` app
+    path('accounts/', include('allauth.urls')),
 ]

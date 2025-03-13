@@ -1,20 +1,42 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
+
 {% block content %}
-<div class="card mx-auto" style="max-width: 500px;">
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card p-4 shadow-lg" style="max-width: 400px; width: 100%;">
     <div class="card-body">
-        <h4 class="card-title text-center">Login</h4>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="username" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn btn-success w-100">Login</button>
-        </form>
+      <h4 class="card-title text-center mb-4">Login</h4>
+      
+      <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required />
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Login</button>
+
+        <div class="text-center my-3">— OR —</div>
+
+        <!-- Google Sign-In Button -->
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+        <div class="d-flex justify-content-center">
+          <div 
+            id="g_id_onload"
+            data-client_id="524720448773-8r846hqnde3lgccp6sp8o3d9038mb6cg.apps.googleusercontent.com"
+            data-login_uri="http://localhost:8000/accounts/google/login/"
+
+            data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin" data-type="standard"></div>
+
+        </div>
+      </form>
     </div>
+  </div>
 </div>
 {% endblock %}
