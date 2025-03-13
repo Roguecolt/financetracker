@@ -23,15 +23,15 @@ def signup_view(request):
 
 def login_view(request):
     if request.method == "POST":
-        email = request.POST.get("email")
+        username = request.POST.get("username")
         password = request.POST.get("password")
         
         # Convert email to username for authentication
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(username=username)
             username = user.username
         except User.DoesNotExist:
-            messages.error(request, "Invalid email or password")
+            messages.error(request, "Invalid Username or Password")
             return redirect("login")
 
         user = authenticate(request, username=username, password=password)
@@ -40,7 +40,7 @@ def login_view(request):
             login(request, user)
             return redirect("home")  # Redirect after login
         else:
-            messages.error(request, "Invalid email or password")
+            messages.error(request, "Invalid Username or Password")
 
     return render(request, "login.html")
 

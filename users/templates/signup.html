@@ -1,7 +1,9 @@
 {% extends 'base.html' %} {% block content %}
 <h2>Signup</h2>
 <form method="post">
-  {% csrf_token %} {{ form.as_p }}
+  {% csrf_token %} 
+  
+  <div class="container justify-content-center align-items-center flex">{{ form.as_p }}</div>
   <button type="submit">Signup</button>
 </form>
 <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>

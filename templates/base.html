@@ -49,10 +49,18 @@
               <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
             {% else %}
-                
+              {% url 'login' as login_url %}
+              {% url 'signup' as signup_url %}
+              {% if request.path == login_url %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'signup' %}">Login/SignUp</a>
+              <a class="nav-link" href="{% url 'signup' %}">SignUp</a>
             </li>
+            
+            {% elif request.path == signup_url %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Login</a>
+            </li>
+              {% endif %}
             {% endif %}
           </ul>
         </div>
